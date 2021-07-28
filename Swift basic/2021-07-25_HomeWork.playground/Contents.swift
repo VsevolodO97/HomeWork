@@ -138,3 +138,42 @@ findPowerOfTwo(number: 4) // 4 - это двойка в степени 2
 findPowerOfTwo(number: 25) // следующая двойка в степени 5
 
 // 5. Зная число, вычислить треугольное число глубиной, равной этому числу.
+
+// Решение инткуитивно-спонтанное :-)
+func findTriangleNumber (number: Int) -> Int {
+    var triangleNumber: Int = 0
+    var counter = 1
+    while counter <= number {
+        triangleNumber += counter
+        counter += 1
+    }
+    return triangleNumber
+}
+
+findTriangleNumber(number: 7)
+
+// Второе решение по формуле из Вики
+
+func findTriangleNumber2 (number n: Int) -> Int {
+    let triangleNumber: Int = (n * (n + 1)) / 2
+    return triangleNumber
+}
+
+findTriangleNumber2(number: 1)
+
+// 6. Вычислить n-ое число последовательности Фибоначчи.
+
+func findFibonachi (number: Int) -> Int {
+    var fibonachiNumber: Int = 0
+    if number == 0 {
+        fibonachiNumber = 0
+    } else if number == 1 {
+        fibonachiNumber = 1
+    }
+    else {
+            fibonachiNumber = ((findFibonachi(number: number - 1)) + findFibonachi(number: number - 2))
+    }
+    
+    return fibonachiNumber
+}
+findFibonachi(number: 10)
