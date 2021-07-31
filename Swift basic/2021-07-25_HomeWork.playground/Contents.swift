@@ -2,23 +2,23 @@ import UIKit
 
 /*
  1. Создать две строковые константы: первая - твое имя, вторая - мое. Сравнить, кто идет раньше по алфавиту.
-
+ 
  2. Создать tuple, описывающий имя и фамилию человека. Создать две константы этого tuple: первая - твое имя, вторая - мое. Сравнить 2 tuple.
  https://stackoverflow.com/a/53266743/932239
  https://developer.apple.com/documentation/swift/comparable (блок Tuple Comparison)
-
+ 
  3. Сколько дней в месяце?
-
+ 
  На основе месяца (String, название месяца в нижней регистре) и года (Int), нужно вычислить количество дней в месяце. Если номер года кратен 4, то год является високосным и «февраль» имеет 29 дней. Исключения: если номер года кратен 100, он не является високосным. Исключение из исключения: если номер года кратен 400, год является високосным 😬
-
+ 
  4. Зная число, определить следующую степень двойки, большую или равную этому числу.
-
+ 
  5. Зная число, вычислить треугольное число глубиной, равной этому числу.
  https://ru.wikipedia.org/wiki/%D0%A2%D1%80%D0%B5%D1%83%D0%B3%D0%BE%D0%BB%D1%8C%D0%BD%D0%BE%D0%B5_%D1%87%D0%B8%D1%81%D0%BB%D0%BE
-
+ 
  6. Вычислить n-ое число последовательности Фибоначчи.
  https://ru.wikipedia.org/wiki/%D0%A7%D0%B8%D1%81%D0%BB%D0%B0_%D0%A4%D0%B8%D0%B1%D0%BE%D0%BD%D0%B0%D1%87%D1%87%D0%B8
-
+ 
  7. Распечатать таблицу, показывающую количество комбинаций для создания каждого числа от 2 до 12 при 2 бросках шестигранных игральных костей.
  */
 
@@ -30,7 +30,7 @@ let whichIsTheFirst = mentorName < menteeName ? "The mentor's name is the first 
 print(whichIsTheFirst)
 // С помощью тернарного оператора и операции сравнения ">" определили, что имя ментора идёт раньше по алфавиту
 
-    /*
+/*
  2. Создать tuple, описывающий имя и фамилию человека. Создать две константы этого tuple: первая - твое имя, вторая - мое. Сравнить 2 tuple.
  https://stackoverflow.com/a/53266743/932239
  https://developer.apple.com/documentation/swift/comparable (блок Tuple Comparison)
@@ -44,7 +44,7 @@ print(whichFirstLastNameIsTheFirstInAlfabet)
 
 /*
  3. Сколько дней в месяце?
-
+ 
  На основе месяца (String, название месяца в нижней регистре) и года (Int), нужно вычислить количество дней в месяце. Если номер года кратен 4, то год является високосным и «февраль» имеет 29 дней. Исключения: если номер года кратен 100, он не является високосным. Исключение из исключения: если номер года кратен 400, год является високосным 😬
  */
 
@@ -163,6 +163,7 @@ findTriangleNumber2(number: 1)
 
 // 6. Вычислить n-ое число последовательности Фибоначчи.
 
+// Solution with recursion function
 func findFibonachi (number: Int) -> Int {
     var fibonachiNumber: Int = 0
     if number == 0 {
@@ -171,9 +172,118 @@ func findFibonachi (number: Int) -> Int {
         fibonachiNumber = 1
     }
     else {
-            fibonachiNumber = ((findFibonachi(number: number - 1)) + findFibonachi(number: number - 2))
+        fibonachiNumber = ((findFibonachi(number: number - 1)) + findFibonachi(number: number - 2))
     }
-    
     return fibonachiNumber
 }
 findFibonachi(number: 10)
+
+// Solution with for-loop
+func findFibonachi2 (number: Int) -> Int {
+    var array: [Int] = []
+    for n in 0...number {
+        if n == 0 {
+            array.append(n)
+        } else if n == 1 {
+            array.append(n)
+        }
+        else {
+            array.append(array[n - 1] + array[n - 2])
+        }
+    }
+    return array[number]
+}
+findFibonachi2(number: 10)
+
+
+// 7. Распечатать таблицу, показывающую количество комбинаций для создания каждого числа от 2 до 12 при 2 бросках шестигранных игральных костей.
+
+func diceRollTable() {
+    var combinationArray: [[[Int]]] = []
+    let diceRoll1 = [1, 2, 3, 4, 5, 6]
+    let diceRoll2 = [1, 2, 3, 4, 5, 6]
+    for i in diceRoll1 {
+        for j in diceRoll2 {
+            if i + j == 2 {
+                if combinationArray.count == 0{
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[0].append([i, j])
+                }
+            } else if i + j == 3 {
+                if  combinationArray.count == 1 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[1].append([i, j])
+                }
+            } else if i + j == 4 {
+                if combinationArray.count == 2 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[2].append([i, j])
+                }
+            } else if i + j == 5 {
+                if combinationArray.count == 3 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[3].append([i, j])
+                }
+            } else if i + j == 6 {
+                if combinationArray.count == 4 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[4].append([i, j])
+                }
+            } else if i + j == 7 {
+                if combinationArray.count == 5 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[5].append([i, j])
+                }
+            } else if i + j == 8 {
+                if combinationArray.count == 6 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[6].append([i, j])
+                }
+            } else if i + j == 9 {
+                if combinationArray.count == 7 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[7].append([i, j])
+                }
+            } else if i + j == 10 {
+                if combinationArray.count == 8 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[8].append([i, j])
+                }
+            } else if i + j == 11 {
+                if combinationArray.count == 9 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[9].append([i, j])
+                }
+            } else if i + j == 12 {
+                if combinationArray.count == 10 {
+                    combinationArray.append([[i, j]])
+                } else {
+                    combinationArray[10].append([i, j])
+                }
+            }
+        }
+    }
+    print(combinationArray[0])
+    print(combinationArray[1])
+    print(combinationArray[2])
+    print(combinationArray[3])
+    print(combinationArray[4])
+    print(combinationArray[5])
+    print(combinationArray[6])
+    print(combinationArray[7])
+    print(combinationArray[8])
+    print(combinationArray[9])
+    print(combinationArray[10])
+}
+diceRollTable()
+
