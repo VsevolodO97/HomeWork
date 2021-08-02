@@ -50,3 +50,23 @@ calculateFullName(firstName: "Alexander", lastName: "Kurbatov")
 for elements in stride(from: 10.0, through: 9.0, by: -0.1) {
     print(elements)
 }
+
+/*
+ 5. Реализовать функцию определения, является ли число простым
+ func isPrime(_ number: Int) -> Bool
+ */
+
+// Реалиация функции определения простоты числа с помощью алгоритма Перебор делителей
+func isPrime(_ number: Int) -> Bool {
+    let maxDivider = Int(sqrt(Double(number)))
+    for i in 2...maxDivider {
+        if number % i == 0 {
+            print("The number \(number) is composite number.")
+            return false
+        }
+    }
+    print("The number \(number) is prime number.")
+    return true
+}
+
+isPrime(7399)
