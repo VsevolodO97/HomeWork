@@ -70,3 +70,4 @@ func isPrime(_ number: Int) -> Bool {
 }
 
 isPrime(7399)
+  
