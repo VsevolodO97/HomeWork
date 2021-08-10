@@ -12,6 +12,7 @@ import UIKit
 
  */
 
+// Интерфейс массива
 struct ArrayInterface {
     let array = Array(1...1000)
     
@@ -74,8 +75,29 @@ struct ArrayInterface {
     
 }
 
+// Интерфейс односвязного списка
+
 struct Stack {
     let array = Array(1...1000)
 
 }
 
+/*
+ 3. Реализовать на Swift сортировку пузырьком
+ */
+
+func bubleSort(array: [Int]) -> [Int] {
+    var array = array
+    for i in stride(from: array.count - 1, through: 0, by: -1) {
+        for j in 0..<i {
+            if array[j] > array[j + 1] {
+                let tempArray = array[j + 1]
+                array[j + 1] = array[j]
+                array[j] = tempArray
+            }
+        }
+        print(array)
+    }
+    return array
+}
+bubleSort(array: [6, 5, 4, 3, 2, 1, 0])
