@@ -104,8 +104,8 @@ print(removing(2, from: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2]))
 
 func reversed(_ array: [Int]) -> [Int] {
     var tempArr: [Int] = []
-    for element in stride(from: array.count - 1, through: 0, by: -1) {
-    tempArr.append(array[element])
+    for index in stride(from: array.count - 1, through: 0, by: -1) {
+    tempArr.append(array[index])
     }
     return tempArr
 }
