@@ -60,3 +60,54 @@ func quickSort(array: [Int]) -> [Int] {
 quickSort(array: [9, 9, 5, 1, 6, 0, 0, 7, 0])
 quickSort(array: [2, 1])
 quickSort(array: [])
+
+/*
+ 4. Реализовать функцию, удаляющую из массива первое вхождение переданного числа
+
+ func removingOnce(_ item: Int, from array: [Int]) -> [Int]
+ */
+func removingOnce(_ item: Int, from array: [Int]) -> [Int] {
+    var tempArr: [Int] = array
+    for (index, element) in tempArr.enumerated() {
+        if element == item {
+            tempArr.remove(at: index)
+            break
+        }
+    }
+    return tempArr
+}
+
+print(removingOnce(2, from: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2]))
+
+/*
+ 5. Написать функцию, которая удаляет все вхождения числа из массива
+
+ func removing(_ item: Int, from array: [Int]) -> [Int]
+ */
+
+func removing(_ item: Int, from array: [Int]) -> [Int] {
+    var tempArr: [Int] = []
+    for element in array {
+        if element != item {
+            tempArr.append(element)
+        }
+    }
+    return tempArr
+}
+
+print(removing(2, from: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2]))
+
+/*
+ 6. Реализовать самостоятельно функцию reversed для массива
+ func reversed(_ array: [Int]) -> [Int]
+ */
+
+func reversed(_ array: [Int]) -> [Int] {
+    var tempArr: [Int] = []
+    for element in stride(from: array.count - 1, through: 0, by: -1) {
+    tempArr.append(array[element])
+    }
+    return tempArr
+}
+
+print(reversed([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2]))
