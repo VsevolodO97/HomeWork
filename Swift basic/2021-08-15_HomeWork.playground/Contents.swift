@@ -120,3 +120,19 @@ let finalDict = countryDict.merging(countryDict1) { (_, new) in new }
 print(finalDict)
 
 
+/*
+ 5. Написать функцию instancesOfCharacters, которая вычисляет, какие символы встречаются в строке, а также как часто встречается каждый из этих символов. Вернуть результат в виде словаря.
+ */
+
+func occurrencesOfCharacters(in text: String) -> [Character: Int] {
+    var dict: [Character: Int] = [:]
+    for charachter in text {
+        if charachter != " " {
+        let countChar = (text.filter {$0 == charachter}).count
+        dict[Character(charachter.uppercased())] = countChar
+        }
+    }
+    return dict
+}
+
+print(occurrencesOfCharacters(in: "Hello world!"))
