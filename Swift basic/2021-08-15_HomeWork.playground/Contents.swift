@@ -136,3 +136,57 @@ func occurrencesOfCharacters(in text: String) -> [Character: Int] {
 }
 
 print(occurrencesOfCharacters(in: "Hello world!"))
+
+/*
+ 6. Написать функцию, которая возвращает true, если все значения словаря уникальны. Использовать Set для проверки уникальности
+*/
+
+func isDictMembersAreUnic(dictionary: [String: String]) -> Bool {
+    if Set(dictionary.values).count != dictionary.values.count {
+        return false
+    }
+    return true
+}
+
+isDictMembersAreUnic(dictionary: ["RU": "Russian Federation", "US": "United States of America", "RF": "Russian Federation"])
+
+/*
+ 7. Создать словарь averageRatings, который будет содержать сопоставление названий приложений со оценками в AppStore. Использовать forEach для итерации по словарю appRatings, а затем использовать reduce, чтобы вычислить средний рейтинг. Сохранить этот рейтинг в словаре averageRatings. После использовать объединенные вместе filter и map, чтобы получить список названий приложений, средний рейтинг которых превышает 3
+
+ ```
+ let appRatings = [
+   "GetContact": [5, 5, 5, 4, 2, 1, 5, 4],
+   "Messenger": [4, 3, 2, 5, 4, 5, 1, 2],
+   "CocoaHeads": [2, 1, 3, 2, 1, 2, 1, 1]
+ ]
+ ```
+ */
+
+let appRatings = [
+  "GetContact": [5, 5, 5, 4, 2, 1, 5, 4],
+  "Messenger": [4, 3, 2, 5, 4, 5, 1, 2],
+  "CocoaHeads": [2, 1, 3, 2, 1, 2, 1, 1]
+]
+
+var averageRatings: [String: Double] = [:]
+
+func getAverageRating(dataRating: [String: [Int]]) -> [String: Double] {
+    appRatings.forEach { app in
+        let count = app.value.count
+        let sumOfRating = app.value.reduce(0, { x, y in
+            (x + y)
+        })
+        averageRatings[app.key] = (Double(sumOfRating) / Double(count)) // не смог среднее арифметическое сделать внутри метода reduce
+    }
+    return averageRatings
+}
+
+print(getAverageRating(dataRating: appRatings))
+
+print(averageRatings)
+
+print(averageRatings.values.filter {$0 > 3.0})
+
+print(averageRatings.filter {$0.value > 3.0})
+
+// не понял зачем использовать метод map
