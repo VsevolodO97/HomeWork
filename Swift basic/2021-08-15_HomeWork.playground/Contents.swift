@@ -185,8 +185,6 @@ print(getAverageRating(dataRating: appRatings))
 
 print(averageRatings)
 
-print(averageRatings.values.filter {$0 > 3.0})
+// Совместное использование функций высшего порядка filter and map позволило получить список названий приложений, средний рейтинг которых превышает 3.
+print(averageRatings.filter {$0.value > 3.0}.map {$0.key})
 
-print(averageRatings.filter {$0.value > 3.0})
-
-// не понял зачем использовать метод map
