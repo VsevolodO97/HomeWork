@@ -31,7 +31,7 @@ struct Circle {
             .pi * radius * radius
         }
         set {
-            radius = newValue   // определяем сеттер, для изменения радиуса окружности исходя из нового значения площади
+            radius = sqrt(newValue / .pi)   // определяем сеттер, для изменения радиуса окружности исходя из нового значения площади
         }
     }
     // определяем функцию, которая увеличивает площадь окружности на заданное значение
@@ -46,6 +46,7 @@ var circle = Circle(radius: 5)
 circle.area
 circle.radius
 circle.grow(byFactor: 5)
+circle.area = 100
 circle.area
 circle.radius
 
