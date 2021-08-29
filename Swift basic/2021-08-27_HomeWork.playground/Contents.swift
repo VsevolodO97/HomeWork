@@ -2,21 +2,21 @@ import UIKit
 
 /*
  1. Дана структура
-
+ 
  struct Circle {
-   
-   var radius = 0.0
-
-   var area: Double {
-     .pi * radius * radius
-   }
-
+ 
+ var radius = 0.0
+ 
+ var area: Double {
+ .pi * radius * radius
  }
-
+ 
+ }
+ 
  Написать метод, который может изменять площадь экземпляра структуры Circle за счет фактора роста. Например, если  вызвать circle.grow (byFactor: 3), площадь экземпляра утроится.
-
+ 
  2. Добавить методы с именами isEven и isOdd в namespace Math, которые возвращают true, если число четное или нечетное соответственно.
-
+ 
  3. Добавить computed properties isEven и isOdd к структуре Int с помощью extension.
  */
 
@@ -28,7 +28,7 @@ struct Circle {
     
     var area: Double {
         get {
-        .pi * radius * radius
+            .pi * radius * radius
         }
         set {
             radius = newValue   // определяем сеттер, для изменения радиуса окружности исходя из нового значения площади
@@ -55,20 +55,22 @@ circle.radius
 
 struct Math {
     
-    func isEven(number: Int) -> Bool {
+    static func isEven(number: Int) -> Bool {
         number % 2 == 0
     }
-    func isOdd(number: Int) -> Bool {
+    static  func isOdd(number: Int) -> Bool {
         number % 2 != 0
-}
+    }
 }
 var someNumber = Math()
-someNumber.isEven(number: 0)
-someNumber.isOdd(number: 0)
+Math.isEven(number: 5)
+//someNumber.isEven(number: 0)
+//someNumber.isOdd(number: 0)
 
 //  3. Добавить computed properties isEven и isOdd к структуре Int с помощью extension.
+
 extension Int {
-    var isEvev: Bool {
+    var isEvev: Bool {  // не получилось computed properties сделать static
         self % 2 == 0
     }
     var isOdd: Bool {
@@ -79,4 +81,3 @@ extension Int {
 var number: Int = 0
 number.isEvev
 number.isOdd
-
