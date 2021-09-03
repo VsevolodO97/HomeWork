@@ -66,7 +66,7 @@ func whereRectangle(rectangle: ((originX: Int, originY: Int), (sizeX: Int, sizeY
     case (_, 0):
         print("Прямоугольник размера \(rectangle.1.sizeX) x \(rectangle.1.sizeY) находится на оси Y со сдвигом по оси X на \(rectangle.0.originX) - \(rectangle)")
     default:
-        print("Прямоугольник размера \(rectangle.1.sizeX) x \(rectangle.1.sizeY) находится в точке \(rectangle.0)")
+        print("Прямоугольник размера \(rectangle.1.sizeX) x \(rectangle.1.sizeY) находится в точке \(rectangle.0) - \(rectangle)")
     }
 }
 
@@ -140,13 +140,85 @@ print(medianOfArray(array: array2))
 //  6. Реализовать первую задачу, используя структуры
 
 struct Coordinates: Equatable {
-    var originX: Int
-    var originY: Int
+    var originX: Int = 0
+    var originY: Int = 0
 }
 struct Size: Equatable {
-    var sizeX: Int
-    var sizeY: Int
+    var sizeX: Int = 0
+    var sizeY: Int = 0
 }
 
-//var rect: (coordinates: Coordinates, size: Size)
-//rect = (
+struct Rect {
+    var origin: Coordinates {
+        didSet {
+            switch origin.originX {
+            case 0 where origin.originY == 0:
+                print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится на начале оси координат - (\(self.origin.originX), \(self.origin.originY)), (\(size.sizeX), \(size.sizeY))")
+            case 0:
+                print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится на оси X со сдвигом по оси Y на \(self.origin.originY) - (\(self.origin.originX), \(self.origin.originY)), (\(size.sizeX), \(size.sizeY))")
+            case _ where origin.originY == 0:
+                print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится на оси Y со сдвигом по оси X на \(self.origin.originX) - (\(self.origin.originX), \(self.origin.originY)), (\(size.sizeX), \(size.sizeY))")
+            default:
+                print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится в точке \(self.origin.originX), \(self.origin.originY) - (\(self.origin.originX), \(self.origin.originY)), (\(size.sizeX), \(size.sizeY))")
+            }
+        }
+    }
+    
+    var size: Size
+    
+    init(origin: Coordinates, size: Size) {
+        self.origin = origin
+        switch origin.originX {
+        case 0 where origin.originY == 0:
+            print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится на начале оси координат - (\(origin.originX), \(origin.originY)), (\(size.sizeX), \(size.sizeY))")
+        case 0:
+            print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится на оси X со сдвигом по оси Y на \(origin.originY) - (\(origin.originX), \(self.origin.originY)), (\(size.sizeX), \(size.sizeY))")
+        case _ where origin.originY == 0:
+            print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится на оси Y со сдвигом по оси X на \(origin.originX) - (\(origin.originX), \(self.origin.originY)), (\(size.sizeX), \(size.sizeY))")
+        default:
+            print("Прямоугольник размера \(size.sizeX) x \(size.sizeY) находится в точке (\(origin.originX), \(origin.originY)), (\(size.sizeX), \(size.sizeY)")
+        }
+        self.size = size
+    }
+}
+
+var rect = Rect(origin: Coordinates(originX: 0, originY: 0), size: Size(sizeX: 5, sizeY: 5))
+rect.origin.originX = 0
+rect.origin.originY = 5
+
+/*
+ 7. Описать структуру Куб
+
+ - Должна возвращать свой объем
+ - реагировать на изменение грани
+ - иметь инициализатор с дефолтным параметром
+ */
+
+struct Cube {
+    var edgeOfCube: Double {
+        didSet {
+            print(" The edge of cube was changed. New value is \(edgeOfCube) and new volume of cube is \(volumeOfCube)")
+        }
+    }
+    var volumeOfCube: Double {
+            return pow(edgeOfCube, 3.0)
+    }
+    
+    init(edgeOfCube: Double = 10) {
+        self.edgeOfCube = edgeOfCube
+    }
+}
+
+var cube = Cube(edgeOfCube: 5)
+cube.volumeOfCube
+cube.edgeOfCube = 10
+
+var anotherCube = Cube()
+anotherCube.edgeOfCube
+anotherCube.volumeOfCube
+anotherCube.edgeOfCube = 5
+anotherCube.volumeOfCube
+
+var cube1 = Cube(edgeOfCube: 16)    // дефолтный инициализатор не сломался
+cube1.edgeOfCube
+cube1.volumeOfCube
