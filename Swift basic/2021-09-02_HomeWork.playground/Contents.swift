@@ -74,40 +74,174 @@ print(ivan.grades.filter {$0.subject == "Geo"}) // как распечатать
 
 class User {
     var userName: String
-    var filmsLibrary: [String: List] = [:]
+    private(set) var filmsLibrary: [String: List] = [:]
     
     func addList(list: List) {
         filmsLibrary.merge([list.listName : list]) { (current, _) in current }
     }
     
     func list(forName: String) -> List? {
-        guard let _ = filmsLibrary.firstIndex(where: {$0.key == forName})  else {
-            print("\(userName) has not library of films named \(forName)")
-            return nil
-        }
-        print(filmsLibrary[forName] ?? print("\(userName) has not library of films named \(forName)"))
+//        guard let _ = filmsLibrary.firstIndex(where: {$0.key == forName})  else {
+//            print("\(userName) has not library of films named \(forName)")
+//            return nil
+//        }
+        print(filmsLibrary[forName]?.filmList ?? print("\(userName) has not library of films named \(forName)"))
         return filmsLibrary[forName]
     }
     
-    init(userName: String) {
+    init(userName: String, filmsLibrary: [String: List] = [:]) {
         self.userName = userName
-    //    self.filmsLibrary = filmsLibrary
+        self.filmsLibrary = filmsLibrary
     }
 }
 
 class List {
     var listName: String
-    var genreList: [String]
+    var filmList: [String]
     
-    init(listName: String, genreList: [String]) {
+    init(listName: String, filmList: [String]) {
         self.listName = listName
-        self.genreList = genreList
+        self.filmList = filmList
+    }
+    
+    func print() {
+        Swift.print(filmList)
     }
 }
 
-var horror = List(listName: "Horror", genreList: ["The katcher", "The call"])
+var horror = List(listName: "Horror", filmList: ["The katcher", "The call"])
+var crimeMovies = List(listName: "Crime movies", filmList: ["Bad Education", "Red, White, and Blue", "The Invisible Man"])
 var vasil = User(userName: "Vasil")
 vasil.addList(list: horror)
-print(vasil.filmsLibrary)
+//print(vasil.filmsLibrary)
 vasil.list(forName: "Horror")
 vasil.list(forName: "Humor")
+var peter = User(userName: "Peter", filmsLibrary: ["Humor" : List(listName: "Humor", filmList: ["Friendsgiving", "Downhill", "Love Wedding Repeat"])])
+peter.filmsLibrary
+//peter.filmsLibrary["Humor"] = List(listName: "", filmList: [])
+peter.filmsLibrary["Humor"] // почему не создался объект при инициализации? А если создался, то как получить к нему доступ?
+//horror.print()
+
+peter.filmsLibrary["Humor"]
+peter.addList(list: horror)
+peter.list(forName: "Horror")
+peter.addList(list: List(listName: "Horror", filmList: ["Saw"]))
+peter.list(forName: "Horror")
+peter.filmsLibrary["Horror"]?.filmList.append("Saw")
+peter.list(forName: "Horror")
+vasil.list(forName: "Horror")
+vasil.filmsLibrary["Horror"]?.filmList.append("Nightmare")
+peter.list(forName: "Horror")
+vasil.list(forName: "Horror")
+/*При изменении списка фильмов у одного пользователя, меняется тот же самый список фильмов у другого пользователя. Это происходит потому что пользователи не хранят собственные списки фильмов, а лишь ссылаются на один и тот же экземпляр клааса List.
+*/
+
+struct User1 {
+    var userName: String
+    var filmsLibrary: [String: List1] = [:]
+    
+    mutating func addList(list: List1) {
+        filmsLibrary.merge([list.listName : list]) { (current, _) in current }
+    }
+    
+    func list(forName: String) -> List1? {
+//        guard let _ = filmsLibrary.firstIndex(where: {$0.key == forName})  else {
+//            print("\(userName) has not library of films named \(forName)")
+//            return nil
+//        }
+        print(filmsLibrary[forName]?.filmList ?? print("\(userName) has not library of films named \(forName)"))
+        return filmsLibrary[forName]
+    }
+    
+    init(userName: String, filmsLibrary: [String: List1] = [:]) {
+        self.userName = userName
+        self.filmsLibrary = filmsLibrary
+    }
+}
+
+struct List1 {
+    var listName: String
+    var filmList: [String]
+    
+//    init(listName: String, filmList: [String]) {
+//        self.listName = listName
+//        self.filmList = filmList
+//    }
+    
+    func print() {
+        Swift.print(filmList)
+    }
+}
+
+var horror1 = List1(listName: "Horror", filmList: ["The katcher", "The call"])
+var oleg = User1(userName: "Oleg")
+var boris = User1(userName: "Boris")
+oleg.addList(list: horror1)
+oleg.list(forName: "Horror")
+oleg.filmsLibrary["Horror"]?.filmList.append("Saw")
+oleg.list(forName: "Horror")
+boris.addList(list: horror1)
+boris.list(forName: "Horror")
+boris.filmsLibrary["Horror"]?.filmList.append("Nightmare")
+boris.list(forName: "Horror")
+oleg.list(forName: "Horror")
+
+/*
+ При использовании структур, каждому экземпляру структуры User1 присваивается свой экземпляр структуры List1. Поэтому при изменении списка фильмов у одного, список фильмов у другого не меняется. Value типы хранят свои данные для каждого экземпляра.
+ */
+/*
+ 2. Создать набор объектов для поддержки магазина футболок. Самостоятельно решить, должен ли каждый объект быть классом или структурой и почему.
+
+ TShirt: представляет собой вариант футболки. У каждой футболки есть размер, цвет, цена и опциональное изображение спереди.
+ User: зарегистрированный пользователь приложения магазина футболок. У пользователя есть имя, адрес электронной почты и корзина для покупок.
+ Address: представляет адрес доставки и содержит имя, улицу, город и почтовый индекс.
+ ShoppingCart: содержит текущий заказ, который состоит из массива футболок, которые пользователь хочет купить, а также метода расчета общей стоимости. Кроме того, есть адрес, который указывает, куда будет отправлен заказ.
+ */
+
+struct TShirt {
+    var size: Int
+    var color: String
+    var price: Double
+    var frontImage: UIImageView?
+}
+
+struct MagazinUser {
+    var name: String
+    var email: String
+    var cart: ShoppingCart
+}
+
+struct Address {
+    var name: String    // не понятно что за имя
+    var street: String
+    var sity: String
+    var postIndex: Int
+}
+
+struct ShoppingCart {
+    var cart: [TShirt]
+    var deliveryAddres: Address
+    
+    func totalPrice() -> Double {
+        var bill: Double = 0
+        for tShirt in cart {
+           bill += tShirt.price
+        }
+        return bill
+    }
+}
+
+let yellowTShirt = TShirt(size: 45, color: "Yellow", price: 14, frontImage: nil)
+let redTSirt = TShirt(size: 40, color: "Red", price: 30, frontImage: nil)
+let sergAdress = Address(name: "SergHouse", street: "Main street", sity: "Main sity", postIndex: 100_001)
+let sergCart = ShoppingCart(cart: [redTSirt, yellowTShirt], deliveryAddres: sergAdress)
+
+var serg = MagazinUser(name: "Serg", email: "serg@mail.ru", cart: sergCart)
+serg.cart.totalPrice()
+serg.name
+serg.cart.deliveryAddres
+/*
+ В этой задаче использовал структуры, так как нет необходимости использовать классы:
+    - нет необходимости в наследовании;
+    - нет необходимости в создании ссылочных сущностей.
+ */
