@@ -115,8 +115,9 @@ class C: B {
     var truth: Bool
     
     init(number: Int, name: String, truth: Bool) {
-        print("I'm <C1>!")
+        print("I'm <C1>!\(truth)")
         self.truth = truth
+        print("I'm <C11>!\(truth)")
         super.init(number: number, name: name)
         print("I'm <C2>!")
     }
