@@ -133,3 +133,43 @@ func separetArray(array: [Int]) -> (evenArray: [Int], oddArray: [Int]) {
 
 arrayInts.sort(by: >)
 print(separetArray(array: arrayInts))
+
+/*
+ 4. Даны две коллекции элементов [1, 2, 3, 2, 0] и [5, 1, 2, 7, 3, 2]. Нужно получить список элементов, входящих в обе коллекции, сохранив число вхождений. То есть если какой-то элемент есть в двух коллекциях, то надо его дважды указать в выходной коллекции
+
+ [1, 2, 3, 2, 0] и [5, 1, 2, 7, 3, 2] -> [1, 2, 2, 3]  (порядок не важен)
+ */
+
+func findRepeatedElements(firstArray: [Int], secondArray: [Int]) -> [Int] {
+    var finalArray: [Int] = []
+    
+    func countElement(array: [Int], element: Int) -> Int {  // Создаем функцию подсчета одинаковых элементов в массиве
+        var count = 0
+        for item in array {
+            if item == element {
+                count += 1
+            }
+        }
+        return count
+    }
+    
+    for i in firstArray {   // Сравниеваем элементы в двух заданных массивах
+        for j in secondArray {
+            if i == j { // При нахождении одинаковых елементов:
+                guard !finalArray.contains(i) else {    // - если елемент уже существует в финальном массиве (читай "проверялся") пропускаем итерацию цикла
+                    continue
+                }
+                let numbOfElFirstArr = countElement(array: firstArray, element: i)  // - подсчитываем количество таких элементов в первом цикле
+                let numbOfElSecondArr =  countElement(array: secondArray, element: i)   // - подсчитываем количество таких элементов во втором цикле
+                if numbOfElFirstArr >= numbOfElSecondArr {  // - добавляем в финальный массив наименьшее общее количество данных элементов
+                    finalArray += Array(repeating: i, count: numbOfElSecondArr)
+                } else {
+                    finalArray += Array(repeating: i, count: numbOfElFirstArr)
+                }
+            }
+        }
+    }
+    return finalArray
+}
+
+print(findRepeatedElements(firstArray: [1, 2, 3, 2, 0], secondArray: [5, 1, 2, 7, 3, 2]))
