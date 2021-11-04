@@ -1,8 +1,6 @@
 import UIKit
 
 /*
- Домашнее задание
-
  1. На основе кода
 
  class Cat {
@@ -44,42 +42,93 @@ import UIKit
 
 
  Также нужно реализовать чтение количества наблюдаемых смотрителем животных и получение описание конкретного животного. Например, через свойство ivan.countAnimals и метод ivan.animalAtIndex(50) (нумерация с нуля)
-
-
- 
-
  */
 
 
-class Cat {
-  var name: String
-
-  init(name: String) {
-    self.name = name
-  }
+class Cat: CustomStringConvertible {
+    var description: String {
+        "Кошка по имени \(name)"
+    }
+    
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
 }
 
-class Dog {
-  var name: String
-
-  init(name: String) {
-    self.name = name
-  }
+class Dog: CustomStringConvertible {
+    var description: String {
+        "Собака по имени \(name)"
+    }
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
 }
 
 class Keeper<Animal> {
-  var name: String
-  var morningCare: Animal
-  var afternoonCare: Animal
-
-  init(name: String, morningCare: Animal, afternoonCare: Animal) {
-    self.name = name
-    self.morningCare = morningCare
-    self.afternoonCare = afternoonCare
-  }
+    var name: String
+    private(set) var morningCare: Animal?
+    private(set) var afternoonCare: Animal?
+    var listOfPets = Array<Animal>()
+    
+    init(name: String, morningCare: Animal, afternoonCare: Animal) {
+        self.name = name
+        self.morningCare = morningCare
+        listOfPets.append(morningCare)
+        self.afternoonCare = afternoonCare
+        listOfPets.append(afternoonCare)
+    }
+    
+    init(name: String) {
+        self.name = name
+    }
 }
 
+extension Keeper {
 
+    func lookAfter(_ pet: Animal) {
+        listOfPets.append(pet)
+    }
+    
+    func countAnimals() -> Int{
+        let numberOfPets = listOfPets.count
+        print("У смотрителя \(self.name) \(numberOfPets) животных.")
+        return numberOfPets
+    }
+    
+    func animalAtIndex(_ index: Int) -> Animal {
+        listOfPets[index]
+    }
+}
+
+let ivan = Keeper<Cat>(name: "Иван")
+
+let someCat = Cat(name: "Барсик")
+let anotherCat = Cat(name: "Снежок")
+
+ivan.lookAfter(someCat)
+ivan.lookAfter(anotherCat)
+ivan.listOfPets
+ivan.countAnimals()
+print(ivan.animalAtIndex(0))
+ivan.animalAtIndex(1)
+
+let someDog = Dog(name: "Черныш")
+let petr = Keeper<Dog>(
+    name: "Пётр",
+    morningCare: Dog(name: "Бобик"),
+    afternoonCare: Dog(name: "Мухтар")
+)
+petr.morningCare
+petr.listOfPets
+petr.lookAfter(someDog)
+petr.listOfPets
+petr.countAnimals()
+petr.animalAtIndex(0)
+print(petr.animalAtIndex(1))
 /*
  2. Сделать так, чтобы закомментированный код работал
 
