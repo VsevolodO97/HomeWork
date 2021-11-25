@@ -164,3 +164,135 @@ firstBadVersion(5)
 
 //  3. Доделать реализацию кастомной коллекции Bag: реализовать поддержку инициализации через Array, проверить, как работают функции высшего порядка
 
+// Hashable, Sequence (IteratorProtocol), Collection, ExpressibleByArrayLiteral, ExpressibleByDictionaryLiteral, CustomStringConvertible
+
+// Set("A", "B", "C") -> Bag("A"|2, "B"|1, "C"|5)
+struct Bag<Element: Hashable> {
+    private var contents: [Element: UInt] = [:]
+    
+    init() {
+        
+    }
+    
+//    init<S: Sequence>(_ sequens: S) where
+//    S.Iterator.Element == Self.Key {
+//        for element in sequence {
+//            add(element)
+//        }
+//    }
+    
+    init<S: Sequence>(_ sequence: S) where
+    S.Iterator.Element == (key: Element, value: UInt) {
+        for (element, count) in sequence {
+            add(element, count: count)
+        }
+    }
+    
+    var uniqueCount: Int {
+        contents.count
+    }
+    
+    var totalCount: UInt {
+        contents.values.reduce(0){ $0 + $1 }
+    }
+    
+    mutating func add(_ member: Element, count: UInt = 1) {
+        if let currentCount = contents[member] {
+            contents[member] = currentCount + count
+        } else {
+            contents[member] = count
+        }
+    }
+    
+    mutating func remove(_ member: Element, count: UInt = 1) {
+        guard
+            let currentCount = contents[member],
+            currentCount >= count else {
+                return
+            }
+        
+        if currentCount > count {
+            contents[member] = currentCount - count
+        } else {
+            contents.removeValue(forKey: member)
+        }
+    }
+}
+
+var shoppingCart = Bag<String>()
+shoppingCart.add("Apple", count: 10)
+shoppingCart.add("Banana")
+shoppingCart.add("Milk")
+
+extension Bag: CustomStringConvertible {
+    var description: String {
+        String(describing: contents)
+    }
+}
+
+print(shoppingCart)
+
+//extension Bag: ExpressibleByArrayLiteral {
+//    typealias ArrayLiteralElement = Element
+//
+//    init(arrayLiteral elements: Self.ArrayLiteralElement...) {
+//        self.init(elements.map { $0.hashValue } )
+//    }
+//}
+
+extension Bag: ExpressibleByArrayLiteral {
+    init(arrayLiteral: Element...) {
+        self.init()
+        for element in arrayLiteral {
+            self.add(element)
+        }
+    }
+}
+
+extension Bag: ExpressibleByDictionaryLiteral {
+    typealias Key = Element
+    typealias Value = UInt
+    
+    init(dictionaryLiteral elements: (Self.Key, Self.Value)...) {
+        self.init(elements.map { (key: $0.0, value: $0.1) })
+    }
+}
+
+let shoppingCart2: Bag = ["Banana" : 2, "Orange" : 1]
+print(shoppingCart2)
+
+let shoppingCart3: Bag = ["Banana", "Orange", "Apple"]
+print(shoppingCart3)
+
+extension Bag: Sequence {
+    typealias Iterator = DictionaryIterator<Element, UInt>
+    
+    func makeIterator() -> DictionaryIterator<Element, UInt> {
+        contents.makeIterator()
+    }
+}
+
+for (element, count) in shoppingCart {
+    print("\(element) - \(count)")
+}
+
+for item in shoppingCart2 {
+    print(item)
+}
+
+let moreThanOne = shoppingCart.filter { $0.1 > 1 }
+print(moreThanOne)
+
+// map
+// reduce
+// sorted
+let mappedCart = shoppingCart3.map { $0.key }
+let filtredCart = shoppingCart3.filter { $0.key == "Banana"}
+let sortedCart = shoppingCart3.sorted { $0.key > $1.key }
+let reducedCart = shoppingCart3.reduce(0) { partialResult, value in
+    partialResult + value[keyPath: \.value]
+}
+print(mappedCart)
+print(filtredCart)
+print(sortedCart)
+print(reducedCart)
