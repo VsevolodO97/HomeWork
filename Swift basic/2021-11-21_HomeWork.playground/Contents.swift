@@ -1,4 +1,5 @@
 import UIKit
+import Foundation
 
 
 /*
@@ -183,8 +184,8 @@ struct Bag<Element: Hashable> {
     
     init<S: Sequence>(_ sequence: S) where
     S.Iterator.Element == (key: Element, value: UInt) {
-        for (element, count) in sequence {
-            add(element, count: count)
+        for (element, numberOfElements) in sequence {
+            add(element, count: numberOfElements)
         }
     }
     
@@ -272,8 +273,8 @@ extension Bag: Sequence {
     }
 }
 
-for (element, count) in shoppingCart {
-    print("\(element) - \(count)")
+for (element, numberOfElements) in shoppingCart {
+    print("\(element) - \(numberOfElements)")
 }
 
 for item in shoppingCart2 {
@@ -296,3 +297,115 @@ print(mappedCart)
 print(filtredCart)
 print(sortedCart)
 print(reducedCart)
+
+/*
+ 4. Реализовать новую коллекцию NonEmptyArray
+
+ - коллекция напоминает стандартный Array, но гарантирует, что всегда содержит хотя бы один элемент
+ - должна поддерживать протокол Sequence
+ - должна быть поддержана инициализация через стандартный Array
+ - нужны публичные свойства / методы: число элементов, добавление, удаление по значению, доступ по индексу (через subscript)
+ */
+struct NonEmptyArray<Element: Hashable> {
+    var content: [Element] = []
+    
+    var numberOfElements: Int {
+        var count = 0
+        for _ in content {
+            count += 1
+        }
+        return count
+    }
+    
+//    init<S: Sequence>(_ sequence: S) where
+//    S.Iterator.Element == Element {
+//        for element in sequence {
+//            add(element)
+//        }
+//    }
+    
+    mutating func add(_ value: Element) {
+        content.append(value)
+  
+    }
+    
+    mutating func deleteElement(_ element: Element) {
+        for i in 0..<content.count {
+            if content[i] == element {
+                content.remove(at: i)
+            }
+        }
+    }
+}
+
+//struct NonEmptyArrayIterator: IteratorProtocol {
+//    typealias Element = NonEmptyArrayIterator
+//
+//    let element: Element
+//
+//    init(_ element: Element) {
+//        self.element = element
+//    }
+//    el
+//    mutating func next() -> Element? {
+//        var nextElementIndex = 0
+//        defer { nextElementIndex += 1 }
+//        guard nextElementIndex > 0 else {
+//            return nil
+//        }
+//        return nextElementIndex
+//    }
+//}
+
+//extension NonEmptyArray: IteratorProtocol, Sequence {
+//    mutating func next() -> Element? {
+//        var nextElement = content[content.startIndex]
+//        defer { nextElement = content[content.startIndex + 1] }
+//        guard content.count > 0 else {
+//            return nil
+//        }
+//        return nextElement
+//    }
+//}
+
+extension NonEmptyArray: Sequence {
+    typealias Iterator = IndexingIterator<Array<Element>>
+    
+    func makeIterator() -> IndexingIterator<Array<Element>>{
+        content.makeIterator()
+    }
+}
+
+extension NonEmptyArray: ExpressibleByArrayLiteral{
+    init(arrayLiteral: Element...) {
+//            self.init()
+            for element in arrayLiteral {
+                self.add(element)
+            }
+        }
+}
+
+extension NonEmptyArray {
+    subscript(index: Int) -> Element {
+            get {
+                return content[index]
+            }
+            set(newValue) {
+                content[index] = newValue
+            }
+    }
+}
+
+var somef: NonEmptyArray = ["SDF"]
+somef.add("fgdfg")
+print(somef)
+
+for i in somef {
+    print(i)
+}
+
+somef.numberOfElements
+somef.deleteElement("fgdfg")
+somef[0]
+somef[0] = "Hello World"
+print(somef)
