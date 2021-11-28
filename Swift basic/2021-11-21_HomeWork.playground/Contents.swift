@@ -388,9 +388,11 @@ extension NonEmptyArray: ExpressibleByArrayLiteral{
 extension NonEmptyArray {
     subscript(index: Int) -> Element {
             get {
+                assert(0 <= index && index < content.count, "Index out of range.")
                 return content[index]
             }
             set(newValue) {
+//                assert(index > content.count, "Index out of range.")
                 content[index] = newValue
             }
     }
@@ -409,3 +411,5 @@ somef.deleteElement("fgdfg")
 somef[0]
 somef[0] = "Hello World"
 print(somef)
+//somef[1]
+//somef[1] = "hjh"
