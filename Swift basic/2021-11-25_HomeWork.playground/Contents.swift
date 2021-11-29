@@ -134,7 +134,7 @@ print(someArr)
 // !!! Крашится удаление первого элемента
 //somef.deleteElement("fgdfg")
 //somef.deleteElement("SDF")
-//somef.remove(at: 0)
+//someArr.remove(at: 0)
 
 
 
@@ -186,7 +186,10 @@ func findPeakElement(_ nums: [Int]) -> Int {
     
     while left <= right {
         let pivot = (left + right) / 2
-        if nums[pivot] > nums[pivot + 1] && nums[pivot] > nums[pivot - 1] {
+        if nums[pivot] > nums[pivot + 1] && nums[pivot] > nums[pivot - 1] ||
+            nums[pivot] > nums[pivot + 1] && pivot == 0 ||
+            nums[pivot] > nums[pivot + 1] && pivot == nums.count - 1
+        {
             return pivot
         } else if nums[pivot] < nums[left] {
             right = pivot - 1
@@ -203,4 +206,6 @@ func findPeakElement(_ nums: [Int]) -> Int {
 //findPeakElement([1,2,1,3,5,6,4])
 //findPeakElement([1])
 //findPeakElement([1, 2])
-findPeakElement([6,5,4,3,2,3,2])
+//findPeakElement([2,1])
+//findPeakElement([6,5,4,3,2,3,2])
+
