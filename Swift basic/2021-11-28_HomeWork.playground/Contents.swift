@@ -79,6 +79,10 @@ struct FibonachiCollectionIndex {
 
 extension FibonachiCollectionIndex: Comparable {
     static func < (lhs: FibonachiCollectionIndex, rhs: FibonachiCollectionIndex) -> Bool {
+        lhs.index < rhs.index
+    }
+    
+    static func == (lhs: FibonachiCollectionIndex, rhs: FibonachiCollectionIndex) -> Bool {
         lhs.index == rhs.index
     }
 }
@@ -112,15 +116,36 @@ extension FibonachiCollection {
     }
 }
 
+extension FibonachiCollection: CustomStringConvertible {
+    var description: String {
+       return "Ряд Фибоначи до числа \(numbersOfFibonachiArray): \(fibonachiArray)"
+    }
+}
+
+extension FibonachiCollection: ExpressibleByIntegerLiteral {
+    typealias IntegerLiteralType = UInt
+    
+    init(integerLiteral value: UInt) {
+        self.numbersOfFibonachiArray = value
+        self.fibonachiArray = createFibonachiArray(for: numbersOfFibonachiArray)
+    }
+}
+
 var structFib = FibonachiCollection(numbersOfFibonachiArray: 5)
 print(structFib)
 structFib.showFibArr()
 //structFib[5] = 77
-print(structFib)
+//print(structFib)
 
 structFib.numbersOfFibonachiArray
 structFib.changeFibonachiArray(for: 4)
 //structFib.numbersOfFibonachiArray = 77
 //structFib.numbersOfFibonachiArray
 structFib.showFibArr()
-structFib
+print(structFib)
+
+
+var anotherStructFib = FibonachiCollection(integerLiteral: 10)
+
+let a: FibonachiCollection = 8
+print(a)
