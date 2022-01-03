@@ -79,49 +79,52 @@ import UIKit
 func findMissingRanges(_ nums: [Int], _ lower: Int, _ upper: Int) -> [String] {
     
     var finalArr: [String] = []
-   
+    
+    guard  !nums.isEmpty else {
+        if upper == lower {
+            finalArr.append("\(lower)")
+        } else if upper - lower == 1 {
+            finalArr.append("\(lower)")
+            finalArr.append("\(upper)")
+        } else {
+            finalArr.append("\(lower)->\(upper)")
+        }
+        return finalArr
+    }
+    
     
     for i in 0..<nums.count {
-        if i == 0 {
-            if nums[0] == lower {
-                continue
-            } else {
-                finalArr.append("\(lower)->\(nums[0] - 1)")
-            }
-        }
-        if i == nums.endIndex - 1 {
-            if nums[nums.endIndex - 1] == upper {
-                finalArr.append("\(nums[i])->\(nums[nums.endIndex - 2])")
-            }
+        
+        if nums[0] != lower && nums[0] - lower == 1 {
+            finalArr.append("\(lower)")
+        } else if nums[0] != lower {
+            finalArr.append("\(lower)->\(nums[0] - 1)")
         }
         
-        if nums[i] + 1 == nums[i + 1] || nums[i] == nums[i + 1] {
-//            finalArr.append("\(nums[i])")
+            guard i != nums.count - 1 else {
+                if upper - nums[nums.count - 1] == 1 {
+                    finalArr.append("\(upper)")
+                } else if lower == upper && lower == nums[0] {
+                    return finalArr
+                } else if upper == nums[0] {
+                    return finalArr
+                } else {
+                    finalArr.append("\(nums[nums.count - 1] + 1)->\(upper)")
+                }
+                return finalArr
+            }
+            
+        if nums[i] + 1 == nums[i + 1] {
             continue
-        } else if nums[i] + 1 != nums[i + 1] && i == 0 {
-            finalArr.append("\(nums[0])->\(nums[i - 1])")
-        } else if  nums[i] + 1 != nums[i + 1] {
+        } else if nums[i + 1] - nums[i] == 2 {
+            finalArr.append("\(nums[i] + 1)")
+        } else {
             finalArr.append("\(nums[i] + 1)->\(nums[i + 1] - 1)")
-        } else if i == nums.endIndex - 2 && nums[i] + 1 != nums[i + 1] {
-            finalArr.append("\(nums[i - 1])->\(upper)")
-        } else if i == nums.endIndex - 2 {
-            break
+        
         }
+        
     }
-//    print(array)
-//    if lower == nums[nums.startIndex] && nums.count == 1 {
-//        finalArr.append("\(lower + 1)->\(upper)")
-//    } else if lower < nums[nums.startIndex] && nums.count == 1 {
-//        finalArr.append("\(lower)->\(nums[nums.startIndex] - 1)")
-//    }
-//
-//    if upper == nums[nums.endIndex - 1] + 1{
-//        finalArr.append("\(upper)")
-//    } else if upper > nums[nums.endIndex - 1] {
-//        finalArr.append("\(nums.endIndex - 1)->\(upper)")
-//    }
-    
     return finalArr
-    }
+}
+findMissingRanges([0, 1], 0, 1)
 
-findMissingRanges([0,1,3,50,75], -3, 99)
