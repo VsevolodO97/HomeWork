@@ -186,3 +186,47 @@ func removeDuplicates1(_ nums: inout [Int]) -> Int {
    }
 var nums = [1, 2, 2]
 removeDuplicates1(&nums)
+
+
+/*
+ Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+ Note that you must do this in-place without making a copy of the array.
+
+  
+
+ Example 1:
+ Input: nums = [0,1,0,3,12]
+ Output: [1,3,12,0,0]
+ 
+ Example 2:
+ Input: nums = [0]
+ Output: [0]
+  
+
+ Constraints:
+ 1 <= nums.length <= 104
+ -231 <= nums[i] <= 231 - 1
+ */
+
+func moveZeroes(_ nums: inout [Int]) {
+    
+    var flag: Int = 0
+    var countZero: Int = 0
+       
+    for index in 0..<nums.count {
+        
+        if nums[index] != 0 {
+            nums[flag] = nums[index]
+            flag += 1
+        } else {
+            countZero += 1
+        }
+    }
+    
+    nums.replaceSubrange(flag..<nums.endIndex, with: repeatElement(0, count: countZero))
+    
+   }
+
+var a = [0,1,0,3,12]
+moveZeroes(&a)
