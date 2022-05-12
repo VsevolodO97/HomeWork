@@ -15,7 +15,7 @@ final class Application {
     
     func main() {
         let reader = DataReader()
-        let flight = reader.read()
+        let students = reader.read()
         let result = flight.findDiff()
         print(result)
     }

@@ -30,7 +30,7 @@ final class Application {
             
             let diff = destination - (source + timeZone)
             
-//           12: let result = "\(diff / 60):\(diff % 60)"
+//          let result = "\(diff / 60):\(diff % 60)"
             let result = "\(diff / 60):\(String(format: "%02d", (diff % 60)))"
             return result
         }
