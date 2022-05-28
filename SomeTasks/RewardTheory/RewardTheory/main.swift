@@ -1,14 +1,45 @@
 import Foundation
 
-struct Head {
+struct Department {
     
-    let parent: Int
+    // Value
     let grade: Int
-    let reward: Int?
+    var reward: Int = 0
     
-    func countRewards() -> String {
-        
-        return "Результат"
+    // Tree
+    let parent: Int
+    
+}
+
+struct Company {
+    var departments: [Department]
+    let summ: Int
+    let numberOfHeads: Int
+    
+    mutating func countRewards() -> String {
+        var summForBranch = 0
+        for i in 0..<departments.count {
+           
+         
+            let branch = departments.filter { $0.parent == i }
+            guard branch.isEmpty == false else { continue  }
+            
+            if branch[0].parent == 0 {
+                summForBranch = summ
+            }
+            let summOfGrades = branch.map { $0.grade }.reduce(0, { x, y in
+                x + y
+            })
+            let factor: Double = Double(summForBranch) / Double(summOfGrades)
+//            departments.filter {$0.parent == i}.map { $0.reward = Int(Double($0.grade) * factor) }
+            for j in 0..<departments.count {
+            
+            if departments[j].parent == i {
+                departments[j].reward = Int(Double(departments[j].grade) * factor)
+            }
+            }
+        }
+        return departments.map { String($0.reward) }.joined(separator: " ")
     }
     
 }
@@ -18,8 +49,8 @@ final class Application {
     
     func main() {
         let reader = DataReader()
-        let heads = reader.read()
-        let result = heads
+        var heads = reader.read()
+        let result = heads.countRewards()
         print(result)
     }
     
@@ -29,7 +60,7 @@ final class Application {
 
     private class DataReader {
         
-        func read() -> [Head] {
+        func read() -> Company {
             print("Введите количество отделов в компании и сумму премирования: ")
             let firstString = readLine() ?? ""
             print("Введите оценки эффективности отделов: ")
@@ -37,24 +68,29 @@ final class Application {
             print("Введите указатели подчинённости отделов: ")
             let thirdString = readLine() ?? ""
             
-            let numberOfHeadsAndSummArray = firstString.map { Int(String($0))! }
-            let gradesArray = secondString.map { Int(String($0))! }
-            let parentsArray = thirdString.map { Int(String($0))! }
-            let numberOfHeads = numberOfHeadsAndSummArray[0]
-            let summ = numberOfHeadsAndSummArray[1]
+            let numberOfHeadsAndSummArray = firstString.split(separator: " ").map(String.init).map(Int.init)
             
-            var arrayOfHeads: [Head] = []
+            let gradesArray = secondString.split(separator: " ").map(String.init).map(Int.init)
+            let parentsArray = thirdString.split(separator: " ").map(String.init).map(Int.init)
+            let numberOfHeads = numberOfHeadsAndSummArray[0]!
+            let summ = numberOfHeadsAndSummArray[1]!
             
-            for i in 0..<numberOfHeads {
-                arrayOfHeads.append(Head(parent: parentsArray[i], grade: gradesArray[i], reward: nil))
+            if numberOfHeads != gradesArray.count || numberOfHeads != parentsArray.count {
+                fatalError("Вы ввели неверные данные!")
             }
             
-//            let students = Students(
-//                groop1: groop1,
-//                groop2: groop2
-//            )
+            var departments: [Department] = []
             
-            return arrayOfHeads
+            for i in 0..<numberOfHeads {
+                departments.append(Department(grade: gradesArray[i]!, parent: parentsArray[i]!))
+            }
+            
+            let company = Company(
+                departments: departments, summ: summ, numberOfHeads: numberOfHeads
+            )
+            
+            
+            return company
         }
     }
 }
