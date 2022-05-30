@@ -2,14 +2,14 @@ import Foundation
 
 struct Matrix {
     
-    let firstArray: [Int?]
-    let secondArray: [Int?]
-    let thirdArray: [Int?]
-    let forthArray: [Int?]
+    private let firstArray: [Int]
+    private let secondArray: [Int]
+    private let thirdArray: [Int]
+    private let forthArray: [Int]
     
-    var matrix: [[Int?]]
+    var matrix: [[Int]]
     
-    init(firstArr: [Int?], secArr: [Int?], thrArr: [Int?], forArr: [Int?]) {
+    init(firstArr: [Int], secArr: [Int], thrArr: [Int], forArr: [Int]) {
         self.firstArray = firstArr
         self.secondArray = secArr
         self.thirdArray = thrArr
@@ -32,7 +32,7 @@ final class Application {
     
     func main() {
         let reader = DataReader()
-        var matrix = reader.read()
+        let matrix = reader.read()
         let result = matrix.matrix
         print(result)
     }
@@ -44,6 +44,9 @@ final class Application {
     private class DataReader {
         
         func read() -> Matrix {
+            
+            // Паттерн Билдер
+            
             print("Введите 4 числа первого массива: ")
             let firstString = readLine() ?? ""
             print("Введите 4 числа второго массива: ")
@@ -53,10 +56,10 @@ final class Application {
             print("Введите 4 числа четвёртого массива: ")
             let forthString = readLine() ?? ""
             
-            let firstArray = firstString.split(separator: " ").map(String.init).map(Int.init)
-            let secondArray = secondString.split(separator: " ").map(String.init).map(Int.init)
-            let thirdArray = thirdString.split(separator: " ").map(String.init).map(Int.init)
-            let forthArray = forthString.split(separator: " ").map(String.init).map(Int.init)
+            let firstArray = transform(userData: firstString)
+            let secondArray = transform(userData: secondString)
+            let thirdArray = transform(userData: thirdString)
+            let forthArray = transform(userData: forthString)
             
             if firstArray.count != 4 || secondArray.count != 4 || thirdArray.count != 4 || forthArray.count != 4 {
                 fatalError("Вы ввели неверные данные!")
@@ -69,8 +72,14 @@ final class Application {
                 forArr: forthArray
             )
             
-            
             return matrix
+        }
+        
+        fileprivate func transform(userData: String) -> [Int] {
+            userData
+                .split(separator: " ")
+                .map(String.init)
+                .compactMap(Int.init)
         }
     }
 }
