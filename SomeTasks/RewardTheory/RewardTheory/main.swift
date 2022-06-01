@@ -48,18 +48,16 @@ final class Application {
     
     func main() {
         let reader = DataReader()
-        var heads = reader.read()
-        let result = heads.countRewards()
+        var company = reader.read()
+        let result = company.countRewards()
         print(result)
     }
-    
-
-    
+        
     // MARK: - Private
 
     private class DataReader {
         
-        private class DepartmentEfficiency {
+        private class DepartmentData {
             
             private let rawString: String
             
@@ -78,19 +76,19 @@ final class Application {
         func read() -> Company {
             print("Введите количество отделов в компании и сумму премирования: ")
             let firstString = readLine() ?? ""
+            let departmentHeadsAndSumm = DepartmentData(data: firstString)
             print("Введите оценки эффективности отделов: ")
             let secondString = readLine() ?? ""
-            let departmentEfficiency = DepartmentEfficiency(data: secondString)
+            let departmentEfficiency = DepartmentData(data: secondString)
             print("Введите указатели подчинённости отделов: ")
             let thirdString = readLine() ?? ""
+            let departmentParents = DepartmentData(data: thirdString)
             
-            let numberOfHeadsAndSummArray = firstString.split(separator: " ").map(String.init).map(Int.init)
-            let parentsArray = thirdString.split(separator: " ").map(String.init).map(Int.init)
-            let numberOfHeads = numberOfHeadsAndSummArray[0]!
-            let summ = numberOfHeadsAndSummArray[1]!
+            let numberOfHeads = departmentHeadsAndSumm.arrayData[0]
+            let summ = departmentHeadsAndSumm.arrayData[1]
             
             if numberOfHeads != departmentEfficiency.arrayData.count
-                || numberOfHeads != parentsArray.count {
+                || numberOfHeads != departmentParents.arrayData.count {
                 fatalError("Вы ввели неверные данные!")
             }
             
@@ -98,8 +96,8 @@ final class Application {
             
             for i in 0..<numberOfHeads {
                 let departament = Department(
-                    grade: gradesArray[i]!,
-                    parent: parentsArray[i]!
+                    grade: departmentEfficiency.arrayData[i],
+                    parent: departmentParents.arrayData[i]
                 )
                 departments.append(departament)
             }
