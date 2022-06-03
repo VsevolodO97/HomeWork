@@ -61,12 +61,12 @@ final class Application {
             
             private let rawString: String
             
-            var arrayData: [Int] {
+            lazy private(set) var arrayData: [Int] = {
                 return rawString
                     .split(separator: " ")
                     .map(String.init)
                     .compactMap(Int.init)
-            }
+            }()
             
             init(data: String) {
                 self.rawString = data
