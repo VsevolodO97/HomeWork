@@ -21,7 +21,6 @@ struct EnterData {
             arrayOfAbsolutTimes.append(time)
         }
         
-        
         let maxTime = arrayOfAbsolutTimes.max()!
         var leadersIndexes: [Int] = []
         for i in 0..<arrayOfAbsolutTimes.count {
@@ -33,9 +32,7 @@ struct EnterData {
 //        let maxTimeIndex = arrayOfAbsolutTimes.firstIndex(of: maxTime)!
         let difficultLetter = arrayOfLetters[leadersIndexes.last!]
         
-        
         return  difficultLetter
-        
     }
 }
 
