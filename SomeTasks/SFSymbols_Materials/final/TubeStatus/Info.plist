@@ -20,6 +20,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>TRANSPORT_API_SERVICE_APP_ID</key>
+	<string>$(TRANSPORT_API_SERVICE_APP_ID)</string>
+	<key>TRANSPORT_API_SERVICE_APP_KEY</key>
+	<string>$(TRANSPORT_API_SERVICE_APP_KEY)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -44,9 +48,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>TRANSPORT_API_SERVICE_APP_ID</key>
-	<string>$(TRANSPORT_API_SERVICE_APP_ID)</string>
-	<key>TRANSPORT_API_SERVICE_APP_KEY</key>
-	<string>$(TRANSPORT_API_SERVICE_APP_KEY)</string>
 </dict>
 </plist>

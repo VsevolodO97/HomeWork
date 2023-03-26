@@ -52,13 +52,13 @@ final class Application {
        
         
         func read() -> EnterData {
-//            print("Введите количество введённых букв:")
+            print("Введите количество введённых букв:")
             let firstString = readLine() ?? ""
             let numberOfLetters = Int(firstString) ?? 0
-//            print("Введите введённую строку:")
+            print("Введите введённую строку:")
             let secondString = readLine() ?? ""
             let arrayOfLetters = secondString.compactMap(Character.init)
-//            print("Введите время ввода каждой буквы:")
+            print("Введите время ввода каждой буквы:")
             let thirdString = readLine() ?? ""
             let arrayOfTimes = thirdString.split(separator: " ").map(String.init).compactMap(UInt.init)
             
