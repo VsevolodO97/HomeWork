@@ -17,23 +17,21 @@ struct EnterData {
     mutating func findOpportunity() -> String{
         var answer: String = ""
         
-//         сортируем группы по количеству танцовщиц
+        // сортируем группы по количеству танцовщиц
         groups.sort(by: >)
-        // сортируем комнаты по вместимости
-//        rooms.keys.sorted()
         
         for group in groups {
-            print(rooms)
-            print(group)
+//            print(rooms)
+//            print(group)
             if rooms.isEmpty {
                 answer = "No"
-               return answer
+                return answer
             }
             for key in rooms.keys.sorted(by: >) {
                 print(key)
                 if group > key || rooms[key] == nil {
                     answer = "No"
-                   return answer
+                    return answer
                 } else {
                     rooms[key] = rooms[key]! - 1
                     if rooms[key] == 0 {
@@ -44,11 +42,11 @@ struct EnterData {
             }
         }
         
-       answer = "Yes"
+        answer = "Yes"
         
         return answer
     }
-
+    
 }
 
 final class Application {
@@ -57,7 +55,7 @@ final class Application {
         let reader = DataReader()
         var enterData = reader.read()
         let result = enterData.findOpportunity()
- 
+        
         print(result)
     }
     
@@ -68,17 +66,17 @@ final class Application {
         
         
         func read() -> EnterData {
-                        print("Введите число групп танцовщиц:")
+            print("Введите число групп танцовщиц:")
             let firstString = readLine() ?? ""
             let numberOfDancersGroops = Int(firstString) ?? 0
-                        print("Введите количество танцовщиц в i-ой группе:")
+            print("Введите количество танцовщиц в i-ой группе:")
             let secondString = readLine() ?? ""
             let groups = secondString.split(separator: " ").map { Int($0)! }
-                        print("Введите количество типов комнат:")
+            print("Введите количество типов комнат:")
             let thirdString = readLine() ?? ""
             let numberOfKindsRooms = Int(thirdString) ?? 0
-                        print("Введите пару тип комнаты-количество таких комнат:")
- 
+            print("Введите пару тип комнаты-количество таких комнат:")
+            
             var rooms: [Int: Int] = [:]
             for _ in 0..<numberOfKindsRooms {
                 let room = readLine()!.split(separator: " ").map { Int($0)! }
@@ -89,7 +87,7 @@ final class Application {
                     
                 }
             }
-           
+            
             
             let enterData = EnterData(numberOfDancersGroops: numberOfDancersGroops, groups: groups, numberOfKindsRooms: numberOfKindsRooms, rooms: rooms)
             
